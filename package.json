@@ -1,18 +1,16 @@
 {
-  "name": "heroicons",
+  "name": "@tensei/icons",
   "version": "1.0.0",
   "license": "MIT",
   "files": [
-    "outline/",
-    "solid/"
+    "icons/"
   ],
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "npm run build-outline && npm run build-solid && npm run build-react && npm run build-vue",
+    "build": "npm run build-icons && npm run build-react && npm run build-vue",
     "build-react": "node ./scripts/build.js react",
     "build-vue": "node ./scripts/build.js vue",
-    "build-outline": "rimraf ./outline ./optimized/outline && svgo --config=svgo.outline.yaml -f ./src/outline -o ./optimized/outline --pretty --indent=2 && cp -R ./optimized/outline ./outline",
-    "build-solid": "rimraf ./solid ./optimized/solid && svgo --config=svgo.solid.yaml -f ./src/solid -o ./optimized/solid --pretty --indent=2 && cp -R ./optimized/solid ./solid"
+    "build-icons": "rimraf ./icons ./optimized-icons && svgo --config=svgo.yaml -f ./src/icons -o ./optimized-icons --pretty --indent=2 && cp -R ./optimized-icons ./icons"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

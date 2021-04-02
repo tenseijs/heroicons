@@ -8,7 +8,10 @@ const { compile: compileVue } = require('@vue/compiler-dom')
 
 let transform = {
   react: async (svg, componentName, format) => {
-    let component = await svgr(svg, {}, { componentName })
+    let component = await svgr(svg, {
+      replaceAttrValues: '#2346F8=currentColor'
+    }, { componentName })
+
     let { code } = await babel.transformAsync(component, {
       plugins: [[require('@babel/plugin-transform-react-jsx'), { useBuiltIns: true }]],
     })
@@ -46,11 +49,11 @@ let transform = {
   },
 }
 
-async function getIcons(style) {
-  let files = await fs.readdir(`./optimized/${style}`)
+async function getIcons() {
+  let files = await fs.readdir(`./optimized-icons`)
   return Promise.all(
     files.map(async (file) => ({
-      svg: await fs.readFile(`./optimized/${style}/${file}`, 'utf8'),
+      svg: await fs.readFile(`./optimized-icons/${file}`, 'utf8'),
       componentName: `${camelcase(file.replace(/\.svg$/, ''), {
         pascalCase: true,
       })}Icon`,
@@ -70,15 +73,15 @@ function exportAll(icons, format, includeExtension = true) {
     .join('\n')
 }
 
-async function buildIcons(package, style, format) {
-  let outDir = `./${package}/${style}`
+async function buildIcons(package, format) {
+  let outDir = `./${package}`
   if (format === 'esm') {
     outDir += '/esm'
   }
 
   await fs.mkdir(outDir, { recursive: true })
 
-  let icons = await getIcons(style)
+  let icons = await getIcons()
 
   await Promise.all(
     icons.flatMap(async ({ componentName, svg }) => {
@@ -106,15 +109,11 @@ async function buildIcons(package, style, format) {
 function main(package) {
   console.log(`Building ${package} package...`)
 
-  Promise.all([rimraf(`./${package}/outline/*`), rimraf(`./${package}/solid/*`)])
+  Promise.all([rimraf(`./${package}/*.svg`), rimraf(`./${package}/*.svg`)])
     .then(() =>
       Promise.all([
-        buildIcons(package, 'solid', 'esm'),
-        buildIcons(package, 'solid', 'cjs'),
-        buildIcons(package, 'outline', 'esm'),
-        buildIcons(package, 'outline', 'cjs'),
-        fs.writeFile(`./${package}/outline/package.json`, `{"module": "./esm/index.js"}`, 'utf8'),
-        fs.writeFile(`./${package}/solid/package.json`, `{"module": "./esm/index.js"}`, 'utf8'),
+        buildIcons(package, 'esm'),
+        buildIcons(package, 'cjs'),
       ])
     )
     .then(() => console.log(`Finished building ${package} package.`))

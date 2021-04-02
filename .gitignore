@@ -1,4 +1,4 @@
 .DS_Store
 /node_modules
-/outline
-/solid
+/icons
+/optimized-icons
