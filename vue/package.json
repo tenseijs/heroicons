@@ -1,6 +1,7 @@
 {
   "name": "@tensei/vue-icons",
   "version": "1.0.0",
+  "main": "icons/index.js",
   "description": "",
   "license": "MIT",
   "keywords": [],
@@ -15,5 +16,5 @@
   "peerDependencies": {
     "vue": ">= 3"
   },
-  "module": "./esm/index.js"
+  "module": "./icons/esm/index.js"
 }

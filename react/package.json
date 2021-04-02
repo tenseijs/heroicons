@@ -2,6 +2,10 @@
   "name": "@tensei/react-icons",
   "version": "1.0.0",
   "description": "",
+  "main": "icons/index.js",
+  "files": [
+    "icons"
+  ],
   "license": "MIT",
   "keywords": [],
   "homepage": "https://github.com/tenseijs/icons#readme",
@@ -15,5 +19,5 @@
   "peerDependencies": {
     "react": ">= 16"
   },
-  "module": "./esm/index.js"
+  "module": "./icons/esm/index.js"
 }
